@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextbaseAI Platform Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --bg: #ffffff;
+    --surface: #f8f9fb;
+    --surface2: #f1f3f6;
+    --border: #e2e5ea;
+    --border-light: #edf0f3;
+    --text: #1a1d23;
+    --text-secondary: #5f6878;
+    --text-muted: #8c95a4;
+    --accent: #2563eb;
+    --accent-light: rgba(37, 99, 235, 0.08);
+    --green: #16a34a;
+    --green-light: rgba(22, 163, 74, 0.08);
+    --orange: #d97706;
+    --orange-light: rgba(217, 119, 6, 0.08);
+    --red: #dc2626;
+    --red-light: rgba(220, 38, 38, 0.08);
+    --purple: #7c3aed;
+    --purple-light: rgba(124, 58, 237, 0.08);
+    --teal: #0d9488;
+    --teal-light: rgba(13, 148, 136, 0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { 
+    background: var(--bg); 
+    color: var(--text); 
+    font-family: var(--font); 
+    font-size: 16px; 
+    line-height: 1.7; 
+    -webkit-font-smoothing: antialiased; 
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px; display: flex; align-items: center; gap: 28px; height: 56px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-logo { 
+    font-weight: 700; 
+    font-size: 15px; 
+    color: var(--text); 
+    margin-right: 12px; 
+    flex-shrink: 0; 
+  }
+  nav a { 
+    color: var(--text-muted); 
+    text-decoration: none; 
+    font-size: 13px; 
+    font-weight: 500; 
+    white-space: nowrap; 
+    transition: color 0.15s; 
+  }
+  nav a:hover { color: var(--text); }
+
+  .container { 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 64px 48px; 
+  }
+  .container + .container { 
+    border-top: 1px solid var(--border); 
+  }
+
+  .section-number {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  
+  h1 { 
+    font-size: 34px; 
+    font-weight: 700; 
+    letter-spacing: -0.8px; 
+    line-height: 1.2; 
+    margin-bottom: 12px; 
+  }
+  h2 { 
+    font-size: 28px; 
+    font-weight: 700; 
+    letter-spacing: -0.6px; 
+    line-height: 1.3; 
+    margin-bottom: 8px; 
+  }
+  h3 { 
+    font-size: 16px; 
+    font-weight: 600; 
+    margin-bottom: 4px; 
+  }
+  .subtitle { 
+    color: var(--text-secondary); 
+    font-size: 18px; 
+    max-width: 800px; 
+    margin-bottom: 40px; 
+    line-height: 1.6;
+  }
+  .label { 
+    font-size: 13px; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    letter-spacing: 1.2px; 
+    color: var(--text-muted); 
+    margin-bottom: 16px; 
+  }
+
+  /* Bold key terms inline */
+  .highlight {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .icon {
+    width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px; flex-shrink: 0;
+  }
+  .icon svg { width: 20px; height: 20px; stroke-width: 1.8; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+  .icon--blue { background: var(--accent-light); color: var(--accent); }
+  .icon--green { background: var(--green-light); color: var(--green); }
+  .icon--orange { background: var(--orange-light); color: var(--orange); }
+  .icon--purple { background: var(--purple-light); color: var(--purple); }
+  .icon--red { background: var(--red-light); color: var(--red); }
+  .icon--teal { background: var(--teal-light); color: var(--teal); }
+
+  .card { 
+    background: var(--surface); 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    padding: 24px; 
+  }
+  .card p { 
+    color: var(--text-secondary); 
+    font-size: 14px; 
+    line-height: 1.6; 
+  }
+  .card-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 20px; 
+  }
+
+  .diagram { 
+    background: var(--surface); 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    padding: 32px; 
+    margin-bottom: 32px; 
+    overflow-x: auto; 
+    position: relative; 
+  }
+  .diagram-label { 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: var(--text-muted); 
+    text-transform: uppercase; 
+    letter-spacing: 0.8px; 
+    margin-bottom: 16px; 
+  }
+  .mermaid-inner { overflow: auto; }
+  .zoom-controls { 
+    position: absolute; 
+    top: 12px; 
+    right: 12px; 
+    display: flex; 
+    gap: 4px; 
+    z-index: 10; 
+  }
+  .zoom-btn {
+    background: var(--surface2); 
+    border: 1px solid var(--border); 
+    border-radius: 6px;
+    width: 28px; height: 28px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    color: var(--text-secondary); 
+    font-size: 14px; 
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .zoom-btn:hover { 
+    background: var(--surface); 
+    color: var(--text); 
+    border-color: var(--accent);
+  }
+
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { 
+    display: flex; 
+    gap: 20px; 
+    padding: 20px 0; 
+    border-bottom: 1px solid var(--border); 
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-dot { 
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    margin-top: 7px; 
+    flex-shrink: 0; 
+  }
+  .tl-dot--done { background: var(--green); }
+  .tl-dot--active { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+  .tl-dot--future { background: var(--border); }
+  .tl-status { 
+    font-size: 12px; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+    margin-bottom: 2px; 
+  }
+  .tl-status--done { color: var(--green); }
+  .tl-status--active { color: var(--accent); }
+  .tl-status--future { color: var(--text-muted); }
+  .tl-title { font-weight: 600; font-size: 16px; }
+  .tl-desc { color: var(--text-secondary); font-size: 14px; }
+
+  /* Feature section with diagram + sidebar */
+  .feature-section { display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+  /* CHAT ANIMATION */
+  .chat-phone {
+    max-width: 400px;
+    margin: 0 auto;
+    background: #2a2a2a;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+  }
+  .chat-header {
+    background: #075e54;
+    color: white;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .chat-header .avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: #25d366;
+    display: flex; align-items: center; justify-content: center; font-size: 16px; color: white;
+  }
+  .chat-header .info { flex: 1; }
+  .chat-header .info small { display: block; font-size: 11px; font-weight: 400; opacity: 0.8; }
+  .chat-body {
+    padding: 16px;
+    height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #1e1e1e;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23333' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .chat-msg {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: chatIn 0.3s ease-out forwards;
+  }
+  .chat-msg.user {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    color: #1a1d23;
+  }
+  .chat-msg.bot {
+    background: #ffffff;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    color: #1a1d23;
+  }
+  .chat-msg .time {
+    font-size: 10px;
+    color: #8c95a4;
+    text-align: right;
+    margin-top: 4px;
+  }
+  .chat-msg strong { font-weight: 600; }
+  .chat-typing {
+    align-self: flex-start;
+    background: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border-bottom-left-radius: 2px;
+    display: none;
+    gap: 4px;
+    align-items: center;
+  }
+  .chat-typing.visible { display: flex; }
+  .chat-typing span {
+    width: 6px; height: 6px; border-radius: 50%; background: #8c95a4;
+    animation: typingDot 1.2s infinite;
+  }
+  .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingDot {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-3px); }
+  }
+  @keyframes chatIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .chat-scene-tabs {
+    display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .chat-scene-tab {
+    padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .chat-scene-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .chat-scene-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .container { padding: 40px 24px; }
+    nav { padding: 0 24px; gap: 20px; }
+    h1 { font-size: 26px; }
+    h2 { font-size: 24px; }
+    .section-number { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">NextbaseAI</span>
+  <a href="#overview">Overview</a>
+  <a href="#demo">Live Demo</a>
+  <a href="#faults">Fault Notifications</a>
+  <a href="#troubleshooting">Troubleshooting</a>
+  <a href="#plc-data">Live PLC Data</a>
+  <a href="#schematics">Schematics</a>
+  <a href="#recipes">Recipe Adjustment</a>
+  <a href="#reports">Reports</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#roadmap">Roadmap</a>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="container">
+  <div class="label">Platform Overview</div>
+  <h1>NextbaseAI</h1>
+  <p class="subtitle">
+    An <span class="highlight">AI assistant</span> that connects to our <span class="highlight">Siemens PLCs</span>, understands our <span class="highlight">electrical schematics</span>, and supports our maintenance and operations teams via <span class="highlight">WhatsApp</span> and a dedicated <span class="highlight">mobile app</span>.
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--red">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <h3>Automatic Fault Alerts</h3>
+      <p>Technicians are notified immediately when a machine faults - with context and suggested actions.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--green">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3>Live PLC Data</h3>
+      <p>Real-time readings from our Siemens PLCs. Temperatures, pressures, speeds, fault codes. All on demand.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--purple">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <h3>Fault Diagnosis</h3>
+      <p>Explains why faults happen by cross-referencing PLC data with electrical schematics.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <h3>Schematic Consultation</h3>
+      <p>Query electrical schematics in plain language. Find components, trace power paths, analyze impacts.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--teal">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <h3>Recipe Adjustment</h3>
+      <p>Operators request recipe changes via chat. The AI validates parameters and applies them safely.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--orange">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <h3>Management Reports</h3>
+      <p>Shift handovers, equipment health summaries, and downtime analysis. All generated automatically.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE DEMO -->
+<div id="demo" class="container">
+  <div class="label">See It In Action</div>
+  <h2>How it looks in practice</h2>
+  <p class="subtitle">Select a scenario to see how <span class="highlight">technicians</span>, <span class="highlight">operators</span>, and <span class="highlight">managers</span> interact with NextbaseAI through <span class="highlight">WhatsApp</span>.</p>
+
+  <div class="chat-scene-tabs">
+    <button class="chat-scene-tab active" onclick="playScene('fault', this)">Fault Alert</button>
+    <button class="chat-scene-tab" onclick="playScene('plcdata', this)">PLC Data Query</button>
+    <button class="chat-scene-tab" onclick="playScene('schematic', this)">Schematic Query</button>
+    <button class="chat-scene-tab" onclick="playScene('recipe', this)">Recipe Change</button>
+    <button class="chat-scene-tab" onclick="playScene('report', this)">Production Report</button>
+  </div>
+
+  <div class="chat-phone">
+    <div class="chat-header">
+      <div class="avatar">N</div>
+      <div class="info">
+        NextbaseAI
+        <small>online</small>
+      </div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-typing" id="chatTyping"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAULT NOTIFICATIONS -->
+<div id="faults" class="container">
+  <div class="section-number">1.</div>
+  <div class="label">Automatic Fault Notifications</div>
+  <h2>Fault Notifications</h2>
+  <p class="subtitle">The system continuously monitors our PLCs. When a <span class="highlight">fault occurs</span>, the right people are notified with <span class="highlight">full context</span> and <span class="highlight">suggested next steps</span>.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Alert Pipeline</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+flowchart LR
+    A["Continuous<br/>PLC Monitoring"] --> B{"Fault or\nthreshold?"}
+    B -->|"Normal"| C["Continue monitoring<br/>no cost"]
+    B -->|"Triggered"| D["AI reads PLC +<br/>schematics"]
+    D --> E["Builds diagnosis<br/>with context"]
+    E --> F["Sends alert to<br/>technician via WhatsApp"]
+    C --> A
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--red">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <h3>Instant Notification</h3>
+      <p>WhatsApp message with fault description, affected machine, and what to check first.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--green">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Cost-Efficient</h3>
+      <p>Monitoring runs continuously at near-zero cost. AI is only activated when something needs attention.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>Right Person, Right Time</h3>
+      <p>Alerts are routed to the responsible technician based on shift, area, and expertise.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<div id="troubleshooting" class="container">
+  <div class="section-number">2.</div>
+  <div class="label">Fault Diagnosis</div>
+  <h2>Troubleshooting</h2>
+  <p class="subtitle">Technicians describe the problem in <span class="highlight">plain language</span>. The AI cross-references <span class="highlight">live PLC data</span> with <span class="highlight">schematics</span> to identify the <span class="highlight">root cause</span>.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Troubleshooting Flow</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+sequenceDiagram
+    actor Tech as Technician
+    participant WA as WhatsApp
+    participant AI as NextbaseAI
+    participant PLC as Siemens PLC
+    participant SCH as Schematics
+
+    Tech->>WA: "Motor M3 is overheating"
+    WA->>AI: Forward message
+
+    AI->>PLC: Read M3 temperature
+    PLC-->>AI: 87.3°C (limit: 75°C)
+
+    AI->>SCH: Trace protection for M3
+    SCH-->>AI: Thermal relay F5, trips at 85°C
+
+    AI-->>WA: Diagnosis + annotated schematic
+    WA-->>Tech: "87.3°C - relay F5 should have tripped. Check F5 contacts and reset."
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3>Text or Voice</h3>
+      <p>Works with typed messages or voice notes. Designed for the factory floor.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--purple">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <h3>Root Cause Analysis</h3>
+      <p>Goes beyond symptoms. Traces the electrical and logical path to the source.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--green">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <h3>Visual Answers</h3>
+      <p>Responses include annotated schematic images highlighting the exact components involved.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE PLC DATA -->
+<div id="plc-data" class="container">
+  <div class="section-number">3.</div>
+  <div class="label">Real-Time PLC Data</div>
+  <h2>Live PLC Data</h2>
+  <p class="subtitle">Any team member can request <span class="highlight">live values</span> from our PLCs - <span class="highlight">temperatures</span>, <span class="highlight">pressures</span>, <span class="highlight">motor states</span>, <span class="highlight">fault codes</span>. All through a simple <span class="highlight">chat message</span>.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Data Retrieval</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+flowchart TD
+    A["User asks about<br/>a PLC value"] --> B["Check TAG_DICTIONARY<br/>(already in context)"]
+    B --> C{"Tag found?"}
+    C -->|"Yes"| F["gateway read<br/>--tags nodeId"]
+    C -->|"No"| D["gateway search<br/>--query '...'"]
+    D --> E["Write discovered tag<br/>to TAG_DICTIONARY"]
+    E --> F
+    F --> G["Compose reply<br/>to user"]
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--green">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3>Real-Time Values</h3>
+      <p>Live readings from our Siemens PLCs. Accessible from anywhere in the plant.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--orange">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3>Read-Only Access</h3>
+      <p>The gateway only reads data. Nothing is ever written back to the PLC.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <h3>Contextual Response</h3>
+      <p>Values include unit, limits, and current status for quick assessment.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEMATICS -->
+<div id="schematics" class="container">
+  <div class="section-number">4.</div>
+  <div class="label">Electrical Schematics</div>
+  <h2>Schematics</h2>
+  <p class="subtitle">Our electrical schematics are converted to a structured format <span class="highlight">(ESCL)</span> that the AI can query like a database. <span class="highlight">Find components</span>, <span class="highlight">trace circuits</span>, <span class="highlight">analyze failures</span>.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Schematic Intelligence Pipeline</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+flowchart LR
+    A["Electrical<br/>Schematic PDF"] --> B["ESCL<br/>Conversion"]
+    B --> C["Queryable<br/>Schematic"]
+    C --> D["Find<br/>Components"]
+    C --> E["Trace Power<br/>Paths"]
+    C --> F["Failure Impact<br/>Analysis"]
+    C --> G["Guided<br/>Diagnosis"]
+    D & E & F & G --> H["Answer +<br/>Annotated Image"]
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--purple">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <h3>Natural Language Queries</h3>
+      <p>"What protects motor M3?" Plain questions, instant answers from the full schematic.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Circuit Tracing</h3>
+      <p>Follow power paths upstream or downstream. Identify every breaker, contactor, and relay in the chain.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--red">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>Impact Analysis</h3>
+      <p>"What happens if contactor K12 fails?" The AI maps every downstream effect.</p>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE ADJUSTMENT -->
+<div id="recipes" class="container">
+  <div class="section-number">5.</div>
+  <div class="label">Recipe Management</div>
+  <h2>Recipe Adjustment</h2>
+  <p class="subtitle">Operators describe <span class="highlight">quality issues</span> in their own words. The AI identifies which <span class="highlight">machine parameters</span> to adjust, explains <span class="highlight">why</span>, and applies the changes after <span class="highlight">confirmation</span>.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Recipe Adjustment Flow</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+sequenceDiagram
+    actor Op as Operator
+    participant AI as NextbaseAI
+    participant PLC as Siemens PLC
+
+    Op->>AI: "Bell end is porous"
+    AI->>AI: Identify root cause + parameters
+    AI-->>Op: "Increase vibration time, reduce sprinkling. Confirm?"
+    Op->>AI: "Yes"
+    AI->>PLC: Write adjusted values
+    PLC-->>AI: Confirmed
+    AI-->>Op: "Updated. Monitor next 5-10 pipes."
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--teal">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <h3>Problem-Based Input</h3>
+      <p>Operators describe what they see ("bell end is porous", "pipe wall too thin"). The AI maps that to the right machine parameters.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--orange">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <h3>Explains Every Change</h3>
+      <p>Before adjusting, the AI explains why each parameter is being changed. Operators understand what's happening and learn over time.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <h3>Full Audit Trail</h3>
+      <p>Every change is logged with who requested it, when, and what the previous values were.</p>
+    </div>
+  </div>
+</div>
+
+<!-- REPORTS -->
+<div id="reports" class="container">
+  <div class="section-number">6.</div>
+  <div class="label">Automated Reports</div>
+  <h2>Reports</h2>
+  <p class="subtitle">At the end of every shift, NextbaseAI compiles a <span class="highlight">production report</span> from <span class="highlight">PLC data</span> and sends it directly to the <span class="highlight">plant manager</span>. No manual input required.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">Daily Report Pipeline</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+flowchart LR
+    A["End of Shift<br/>(scheduled trigger)"] --> B["Read PLC counters<br/>+ alert history"]
+    B --> C["Compile report:<br/>output, uptime, faults"]
+    C --> D["Send to plant<br/>manager via WhatsApp"]
+    C --> E["Archive for<br/>trend analysis"]
+      </pre>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon icon--orange">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <h3>End-of-Shift Production Report</h3>
+      <p>Units produced, uptime percentage, fault count, top issues. Sent automatically at shift end.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--green">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Shift Handover</h3>
+      <p>What happened, what was fixed, what the next shift needs to watch. Covers all machines.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--blue">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <h3>Weekly Trends</h3>
+      <p>Aggregated data over the week. Spot recurring issues, compare shift performance, track improvements.</p>
+    </div>
+    <div class="card">
+      <div class="icon icon--red">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Downtime Analysis</h3>
+      <p>Automatic logging and categorization of every downtime event. Root causes ranked by frequency.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHITECTURE -->
+<div id="architecture" class="container">
+  <div class="section-number">7.</div>
+  <div class="label">Architecture</div>
+  <h2>Architecture</h2>
+  <p class="subtitle">A small <span class="highlight">gateway</span> runs <span class="highlight">on-premise</span> inside our factory. The <span class="highlight">AI</span> and <span class="highlight">knowledge base</span> run in the cloud.</p>
+
+  <div class="diagram">
+    <div class="diagram-label">System Architecture</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomMermaid(this, 1.2)">+</button>
+      <button class="zoom-btn" onclick="zoomMermaid(this, 0.8)">−</button>
+      <button class="zoom-btn" onclick="resetZoom(this)">⟲</button>
+    </div>
+    <div class="mermaid-inner">
+      <pre class="mermaid">
+flowchart TB
+    subgraph FACTORY["OUR FACTORY"]
+        PLC["Siemens PLC<br/>(compatible with all machines)"]
+        GW["NextbaseAI Gateway<br/>On-premise · Read-only"]
+    end
+
+    subgraph CLOUD["NEXTBASEAI CLOUD"]
+        AI["AI Agent"]
+        MON["Smart Monitoring"]
+        KB["Knowledge Base<br/>Manuals · Schematics · History"]
+    end
+
+    subgraph USERS["OUR TEAM"]
+        TECH["Technicians<br/>WhatsApp"]
+        ENG["Engineers<br/>Mobile App"]
+        MGR["Managers<br/>Automated Reports"]
+    end
+
+    PLC --> GW
+    GW -->|"Secure connection"| AI
+    GW -->|"Continuous polling"| MON
+    KB --> AI
+    MON -->|"Alerts"| AI
+    AI --> TECH
+    AI --> ENG
+    AI --> MGR
+      </pre>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div id="roadmap" class="container">
+  <div class="section-number">8.</div>
+  <div class="label">Roadmap</div>
+  <h2>Roadmap</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--done"></div>
+      <div>
+        <div class="tl-status tl-status--done">Completed</div>
+        <div class="tl-title">WhatsApp AI Assistant</div>
+        <div class="tl-desc">Natural language troubleshooting, voice messages, machine-specific knowledge base.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--done"></div>
+      <div>
+        <div class="tl-status tl-status--done">Completed</div>
+        <div class="tl-title">Schematic Intelligence (ESCL)</div>
+        <div class="tl-desc">Electrical schematics converted to queryable format. Trace, lookup, impact analysis.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--done"></div>
+      <div>
+        <div class="tl-status tl-status--done">Completed</div>
+        <div class="tl-title">Live PLC Integration</div>
+        <div class="tl-desc">On-premise gateway with real-time Siemens PLC data access.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--active"></div>
+      <div>
+        <div class="tl-status tl-status--active">In Progress</div>
+        <div class="tl-title">Mobile App + Smart Monitoring + Recipe Management</div>
+        <div class="tl-desc">Dedicated mobile interface, continuous alert system, and operator recipe adjustments.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--future"></div>
+      <div>
+        <div class="tl-status tl-status--future">Planned</div>
+        <div class="tl-title">Automated Reports + Trend Analysis</div>
+        <div class="tl-desc">Shift handovers, equipment health summaries, historical trend charts.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot--future"></div>
+      <div>
+        <div class="tl-status tl-status--future">Planned</div>
+        <div class="tl-title">Computer Vision Quality Control</div>
+        <div class="tl-desc">Camera-based inspection on production lines. Defect detection and classification.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="container" style="text-align:center; padding:32px;">
+  <p style="color:var(--text-muted); font-size:13px;">NextbaseAI - Romulo Lange de Almeida · 2026</p>
+</div>
+
+<script>
+  window.addEventListener('load', function() { if (typeof mermaid !== 'undefined') mermaid.initialize({
+    startOnLoad: true, theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(79, 158, 255, 0.15)',
+      primaryTextColor: '#1a1d23',
+      primaryBorderColor: '#2563eb',
+      lineColor: '#b8c5d3',
+      secondaryColor: '#f8f9fb',
+      tertiaryColor: '#f1f3f6',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      fontSize: '15px',
+      nodeBorder: '#4f9eff',
+      mainBkg: 'rgba(79, 158, 255, 0.15)',
+      clusterBkg: '#f8f9fb',
+      clusterBorder: '#e2e5ea',
+      titleColor: '#1a1d23',
+      edgeLabelBackground: '#ffffff',
+      nodeTextColor: '#1a1d23',
+      actorTextColor: '#1a1d23',
+      actorBorder: '#2563eb',
+      actorBkg: 'rgba(79, 158, 255, 0.15)',
+      signalColor: '#1a1d23',
+      signalTextColor: '#1a1d23',
+      activationBorderColor: '#2563eb',
+      activationBkgColor: 'rgba(79, 158, 255, 0.15)',
+      sequenceNumberColor: '#ffffff'
+    }
+  }); });
+  // CHAT ANIMATION
+  var scenes = {
+    fault: [
+      { type: 'bot', text: '⚠️ <strong>Fault detected on Gearbox Cooling</strong>\n\nOil temperature above 80°C.\nCurrent: 83.7°C (limit: 80°C)\n\nCooling pump P2 is running but flow rate is below expected. Oil filter differential pressure is high.\n\n<strong>Suggested action:</strong> Check oil filter for clogging. Inspect cooling circuit valve V3 position.', time: '14:23' },
+      { type: 'user', text: 'What was the oil temperature trend before the fault?', time: '14:25' },
+      { type: 'bot', text: 'Gearbox oil temperature over the last 2 hours:\n\n12:30 — 64°C ✅\n13:00 — 69°C ✅\n13:30 — 74°C ⚠️\n14:00 — 78°C ⚠️\n14:20 — 83.7°C 🔴 (fault)\n\nSteady increase of ~4°C every 30 minutes while cooling pump was active. Points to restricted oil flow through the filter.', time: '14:25' },
+    ],
+    plcdata: [
+      { type: 'user', text: 'What\'s the current gearbox oil temperature?', time: '09:15' },
+      { type: 'bot', text: '<strong>Gearbox Oil Temperature</strong>\n\nCurrent: 68.4°C\nSetpoint: 65.0°C\nStatus: ✅ Within range (50-80°C)\n\nTrend: stable for the last 45 minutes.', time: '09:15' },
+      { type: 'user', text: 'And the hydraulic pressure on the press?', time: '09:16' },
+      { type: 'bot', text: '<strong>Hydraulic Press Pressure</strong>\n\nCurrent: 182 bar\nSetpoint: 185 bar\nStatus: ✅ Normal (160-200 bar)\n\nStable. Accumulator charge cycle running normally.', time: '09:16' },
+    ],
+    schematic: [
+      { type: 'user', text: 'What protects the cooling pump motor?', time: '10:30' },
+      { type: 'bot', text: '<strong>Protection chain for Cooling Pump P2 (Motor M7):</strong>\n\nL51 → Q7 (circuit breaker, 25A)\n→ K12 (contactor)\n→ F8 (thermal relay, 18-25A)\n→ M7 (cooling pump motor, 15kW)\n\nSafety: Emergency stop E3 cuts K12 coil via safety relay K1.', time: '10:31' },
+      { type: 'user', text: 'What happens if contactor K12 fails?', time: '10:32' },
+      { type: 'bot', text: '<strong>Impact analysis for K12 failure:</strong>\n\nDirect: Cooling pump P2 stops (motor M7, 15kW)\nDownstream: Gearbox oil cooling lost, temperature will rise\nCritical: Gearbox overtemp fault within ~30 min if not addressed\n\nNo other motors affected. K12 only controls M7.', time: '10:32' },
+    ],
+    recipe: [
+      { type: 'user', text: 'My bell end is looking porous, adjust the recipe to fix that issue.', time: '11:00' },
+      { type: 'bot', text: '<strong>Porosity on bell end detected.</strong>\n\nThis is usually caused by excess water and insufficient vibration. I\'ll adjust two parameters:\n\n1. <strong>Main Vibration Time:</strong> 8s → 12s\n(longer vibration removes trapped air pockets)\n\n2. <strong>Shaft Sprinkling Time:</strong> 6s → 3.5s\n(less water on the shaft reduces moisture in the bell end area)\n\nAlso consider reducing the water amount in your concrete recipe.\n\nConfirm these changes?', time: '11:00' },
+      { type: 'user', text: 'Yes, go ahead', time: '11:01' },
+      { type: 'bot', text: '✅ <strong>Done.</strong> Recipe updated.\n\nMain Vibration Time: 8s → 12s\nShaft Sprinkling Time: 6s → 3.5s\n\nMonitor the next 5-10 pipes to check if porosity improves. If it persists, try reducing concrete water content by 2-3%.', time: '11:01' },
+    ],
+    report: [
+      { type: 'bot', text: '📊 <strong>Production Report — Feb 21, Shift 2</strong>\n\n<strong>Output:</strong> 174 pieces (target: 190) ⚠️\n<strong>Uptime:</strong> 87.3%\n<strong>Idle time:</strong> 42 min\n<strong>Faults:</strong> 3 total (48 min downtime)\n\n<strong>Downtime breakdown:</strong>\n1. Gearbox overtemp — oil filter clogged (28 min)\n2. Conveyor belt slip sensor (12 min)\n3. Hydraulic press accumulator low (8 min)\n\n<strong>Idle time:</strong> 42 min total — material changeover (25 min), operator break coverage gap (17 min)\n\n<strong>Maintenance note:</strong> Oil filter replacement recommended before next shift.', time: '22:00' },
+      { type: 'user', text: 'How does today compare to yesterday?', time: '22:02' },
+      { type: 'bot', text: '<strong>Shift 2 comparison:</strong>\n\nOutput: 174 today vs 162 yesterday (+7.4%)\nUptime: 87.3% vs 83.1% (+4.2%)\nIdle time: 42 min vs 58 min (improved)\nFaults: 3 vs 5 (improved)\n\nYesterday had 2 extended stoppages on the hydraulic press (pressure valve issue, now resolved).', time: '22:02' },
+    ]
+  };
+
+  var chatTimeout = [];
+  function playScene(name, btn) {
+    // Update tabs
+    document.querySelectorAll('.chat-scene-tab').forEach(t => t.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else document.querySelector('.chat-scene-tab')?.classList.add('active');
+
+    // Clear existing
+    chatTimeout.forEach(function(t){ clearTimeout(t); });
+    chatTimeout = [];
+    var body = document.getElementById('chatBody');
+    if (!body) return;
+    body.innerHTML = '<div class="chat-typing" id="chatTyping"><span></span><span></span><span></span></div>';
+    var typing = document.getElementById('chatTyping');
+
+    const msgs = scenes[name];
+    let delay = 300;
+
+    msgs.forEach((msg, i) => {
+      // Show typing before bot messages
+      if (msg.type === 'bot') {
+        chatTimeout.push(setTimeout(() => { typing.classList.add('visible'); }, delay));
+        delay += 800 + msg.text.length * 3;
+        chatTimeout.push(setTimeout(() => { typing.classList.remove('visible'); }, delay));
+        delay += 100;
+      } else {
+        delay += 400;
+      }
+
+      chatTimeout.push(setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'chat-msg ' + msg.type;
+        el.innerHTML = msg.text.replace(/\n/g, '<br>') + '<div class="time">' + msg.time + '</div>';
+        body.insertBefore(el, typing);
+        body.scrollTop = body.scrollHeight;
+      }, delay));
+
+      delay += 600;
+    });
+  }
+
+  function zoomMermaid(btn, factor) {
+    const wrap = btn.closest('.diagram');
+    const inner = wrap?.querySelector('.mermaid-inner');
+    const svg = inner?.querySelector('svg'); if (!svg) return;
+    const current = parseFloat(svg.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || '1');
+    svg.style.transform = `scale(${Math.max(0.3, Math.min(3, current * factor))})`;
+    svg.style.transformOrigin = 'top left';
+  }
+  function resetZoom(btn) {
+    const wrap = btn.closest('.diagram');
+    const inner = wrap?.querySelector('.mermaid-inner');
+    const svg = inner?.querySelector('svg'); if (!svg) return;
+    svg.style.transform = 'scale(1)';
+  }
+</script>
+<script>
+// Chat auto-play (inline, runs after DOM is parsed)
+(function(){
+  var body = document.getElementById('chatBody');
+  if (!body) return;
+  setTimeout(function(){ playScene('fault'); }, 500);
+})();
+</script>
+</body>
+</html>
